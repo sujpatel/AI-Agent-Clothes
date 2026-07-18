@@ -34,17 +34,34 @@ def add_item(item_id: str, item: ClothingItem, photo_path: str) -> None:
                     "pattern": item.pattern,
                     "description": item.description,
                     "photo_path": photo_path,
+                    "available": True,
                 },
             }
         ]
     )
 
 
+def set_availability(item_id: str, available: bool) -> None:
+    _index.update(id=item_id, set_metadata={"available": available})
+
+
+def list_items() -> list[dict]:
+    all_ids = []
+    for batch in _index.list():
+        all_ids.extend(item.id for item in batch.vectors)
+
+    if not all_ids:
+        return []
+
+    fetch_result = _index.fetch(ids=all_ids)
+    return [{"id": item_id, **vector.metadata} for item_id, vector in fetch_result.vectors.items()]
+
+
 def query_candidates(occasion: str, category: str, n_results: int = 5) -> list[dict]:
     results = _index.query(
         vector=embed_text(occasion),
         top_k=n_results,
-        filter={"category": {"$eq": category}},
+        filter={"category": {"$eq": category}, "available": {"$eq": True}},
         include_metadata=True,
     )
 

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pinecone import Pinecone, ServerlessSpec
 
 from app.config import PINECONE_API_KEY
@@ -43,6 +45,23 @@ def add_item(item_id: str, item: ClothingItem, photo_path: str) -> None:
 
 def set_availability(item_id: str, available: bool) -> None:
     _index.update(id=item_id, set_metadata={"available": available})
+
+
+def update_item_fields(item_id: str, fields: dict) -> None:
+    """Update specific metadata fields (e.g. category, color, pattern) without
+    touching the embedding vector — fixes a mis-tagged item's fields directly."""
+    _index.update(id=item_id, set_metadata=fields)
+
+
+def delete_item(item_id: str) -> None:
+    fetch_result = _index.fetch(ids=[item_id])
+    vector = fetch_result.vectors.get(item_id)
+
+    _index.delete(ids=[item_id])
+
+    if vector and vector.metadata.get("photo_path"):
+        photo_path = Path(vector.metadata["photo_path"])
+        photo_path.unlink(missing_ok=True)
 
 
 def list_items() -> list[dict]:

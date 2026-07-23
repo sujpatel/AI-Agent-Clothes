@@ -5,9 +5,11 @@ from google import genai
 from google.genai import types
 
 from app.config import GEMINI_API_KEY
+from app.gemini_utils import with_gemini_retry
 from app.models import ClothingItem
 
-client = genai.Client(api_key=GEMINI_API_KEY)
+# A hung network call would otherwise hang the whole request indefinitely.
+client = genai.Client(api_key=GEMINI_API_KEY, http_options=types.HttpOptions(timeout=30_000))
 
 PROMPT = """Look at this clothing item photo and extract its attributes.
 
@@ -21,6 +23,7 @@ PROMPT = """Look at this clothing item photo and extract its attributes.
 """
 
 
+@with_gemini_retry
 def tag_photo(photo_path: Path) -> ClothingItem:
     image_bytes = photo_path.read_bytes()
     mime_type = "image/png" if photo_path.suffix.lower() == ".png" else "image/jpeg"

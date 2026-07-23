@@ -1,3 +1,4 @@
+import time
 from pathlib import Path
 
 from pinecone import Pinecone, ServerlessSpec
@@ -37,6 +38,7 @@ def add_item(item_id: str, item: ClothingItem, photo_path: str) -> None:
                     "description": item.description,
                     "photo_path": photo_path,
                     "available": True,
+                    "last_worn": 0,  # 0 = never worn; sorts as most eligible for rotation
                 },
             }
         ]
@@ -44,7 +46,12 @@ def add_item(item_id: str, item: ClothingItem, photo_path: str) -> None:
 
 
 def set_availability(item_id: str, available: bool) -> None:
-    _index.update(id=item_id, set_metadata={"available": available})
+    fields = {"available": available}
+    if not available:
+        # Sending something to laundry is the clearest signal it was actually
+        # worn — reuses that existing action instead of needing a new one.
+        fields["last_worn"] = int(time.time())
+    _index.update(id=item_id, set_metadata=fields)
 
 
 def update_item_fields(item_id: str, fields: dict) -> None:
@@ -76,15 +83,39 @@ def list_items() -> list[dict]:
     return [{"id": item_id, **vector.metadata} for item_id, vector in fetch_result.vectors.items()]
 
 
+POOL_SIZE_MULTIPLIER = 3  # pull a wider pool than needed so recency has room to reorder results
+MAX_POOL_SIZE = 20
+RECENCY_WINDOW_DAYS = 14  # items unworn for 2+ weeks get no rotation penalty at all
+RECENCY_PENALTY_WEIGHT = 0.3  # tuned to reorder similarly-relevant items, not override a clearly better match
+
+
 def query_candidates(occasion: str, category: str, n_results: int = 5) -> list[dict]:
+    """Retrieves candidates by occasion relevance, then re-ranks a wider pool
+    to deprioritize recently-worn items — so the same few favorites don't
+    keep winning every time, without hard-excluding them like `available` does."""
+    pool_size = min(n_results * POOL_SIZE_MULTIPLIER, MAX_POOL_SIZE)
     results = _index.query(
         vector=embed_text(occasion),
-        top_k=n_results,
+        top_k=pool_size,
         filter={"category": {"$eq": category}, "available": {"$eq": True}},
         include_metadata=True,
     )
 
+    now = time.time()
     candidates = []
     for match in results["matches"]:
-        candidates.append({"id": match["id"], **match["metadata"]})
-    return candidates
+        metadata = match["metadata"]
+        last_worn = metadata.get("last_worn", 0)
+        days_since_worn = (now - last_worn) / 86400 if last_worn else RECENCY_WINDOW_DAYS
+
+        recency_penalty = (
+            max(0.0, RECENCY_WINDOW_DAYS - days_since_worn) / RECENCY_WINDOW_DAYS * RECENCY_PENALTY_WEIGHT
+        )
+        candidates.append({"id": match["id"], "_rank_score": match["score"] - recency_penalty, **metadata})
+
+    candidates.sort(key=lambda c: c["_rank_score"], reverse=True)
+    top_candidates = candidates[:n_results]
+    for candidate in top_candidates:
+        candidate.pop("_rank_score", None)
+
+    return top_candidates

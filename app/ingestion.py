@@ -50,16 +50,3 @@ def tag_folder(folder: Path) -> dict[str, ClothingItem]:
         print(f"Tagging {photo_path.name}...")
         results[photo_path.name] = tag_photo(photo_path)
     return results
-
-
-if __name__ == "__main__":
-    from app.vectorstore import add_item
-
-    photos_dir = Path(__file__).parent.parent / "data" / "photos"
-    tagged = tag_folder(photos_dir)
-
-    for filename, item in tagged.items():
-        print(f"\n{filename}:")
-        print(item.model_dump_json(indent=2))
-        add_item(item_id=filename, item=item, photo_path=str(photos_dir / filename))
-        print(f"Saved to Pinecone as '{filename}'")

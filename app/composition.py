@@ -149,9 +149,11 @@ def _finalize(contents: list) -> OutfitChoice:
     return OutfitChoice.model_validate(json.loads(final_response.text))
 
 
-def compose_outfit(occasion: str, location: str, style_profile: str | None = None) -> tuple[list, OutfitChoice]:
+def compose_outfit(
+    occasion: str, location: str, user_id: str, style_profile: str | None = None
+) -> tuple[list, OutfitChoice]:
     candidates_by_category = {
-        category: query_candidates(occasion, category=category, n_results=5)
+        category: query_candidates(occasion, category=category, user_id=user_id, n_results=5)
         for category in CATEGORIES
     }
 
@@ -165,6 +167,7 @@ def override_outfit(
     contents: list,
     correction: str,
     occasion: str,
+    user_id: str,
     new_occasion: Optional[str] = None,
 ) -> tuple[list, OutfitChoice]:
     """Apply a follow-up correction (e.g. "swap the shoes", "show me another",
@@ -177,7 +180,8 @@ def override_outfit(
     longer actually available."""
     effective_occasion = new_occasion or occasion
     candidates_by_category = {
-        category: query_candidates(effective_occasion, category=category, n_results=5) for category in CATEGORIES
+        category: query_candidates(effective_occasion, category=category, user_id=user_id, n_results=5)
+        for category in CATEGORIES
     }
     occasion_note = f"The occasion has changed to: {new_occasion}. " if new_occasion else ""
     contents.append(

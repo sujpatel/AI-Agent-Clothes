@@ -82,20 +82,22 @@ def delete_item(item_id: str, user_id: str, token: str) -> None:
     delete_photo(user_id, token, item_id)
 
 
+MAX_WARDROBE_ITEMS = 500  # generous headroom over any real wardrobe size
+
+
 def list_items(user_id: str) -> list[dict]:
-    all_ids = []
-    for batch in _index.list():
-        all_ids.extend(item.id for item in batch.vectors)
-
-    if not all_ids:
-        return []
-
-    fetch_result = _index.fetch(ids=all_ids)
-    return [
-        {"id": item_id, **vector.metadata}
-        for item_id, vector in fetch_result.vectors.items()
-        if vector.metadata.get("user_id") == user_id
-    ]
+    # Pinecone's list() has no metadata filter (only query()/fetch() do), so
+    # rather than listing every id in the index across all users and
+    # filtering in Python, query with a neutral zero-vector — this still
+    # filters server-side by user_id and scales with one user's wardrobe
+    # size, not the whole index's.
+    results = _index.query(
+        vector=[0.0] * DIMENSION,
+        top_k=MAX_WARDROBE_ITEMS,
+        filter={"user_id": {"$eq": user_id}},
+        include_metadata=True,
+    )
+    return [{"id": match["id"], **match["metadata"]} for match in results["matches"]]
 
 
 POOL_SIZE_MULTIPLIER = 3  # pull a wider pool than needed so recency has room to reorder results

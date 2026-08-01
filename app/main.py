@@ -7,13 +7,16 @@ from fastapi import Response
 from fastapi.responses import FileResponse, JSONResponse
 from google.genai import errors as genai_errors
 from pydantic import BaseModel, Field
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 from app.auth import AuthedUser, get_current_user, get_current_user_id
 from app.composition import compose_outfit, override_outfit
 from app.detection import crop_detections, detect_garments
 from app.ingestion import tag_photo
 from app.models import ClothingItem, Category
-from app.photo_store import delete_photo, download_photo, upload_photo
+from app.photo_store import download_photo, upload_photo
 from app.session_store import get_conversation, save_conversation
 from app.uploads import read_validated_image, save_validated_image
 from app.vectorstore import add_item, delete_item, list_items, set_availability, update_item_fields
@@ -21,7 +24,28 @@ from app.vectorstore import add_item, delete_item, list_items, set_availability,
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 
+
+def _rate_limit_key(request: Request) -> str:
+    """Key by the authenticated user's id when available, so limits track a
+    real identity rather than an IP address (unreliable behind Railway's
+    proxy, and shared by anyone on the same network/NAT). Falls back to IP
+    for unauthenticated requests (just /health)."""
+    auth_header = request.headers.get("authorization", "")
+    if auth_header.startswith("Bearer "):
+        try:
+            from app.auth import _verify
+
+            return _verify(auth_header).user_id
+        except HTTPException:
+            pass
+    return get_remote_address(request)
+
+
+limiter = Limiter(key_func=_rate_limit_key)
+
 app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 @app.exception_handler(genai_errors.ServerError)
@@ -80,7 +104,8 @@ def health():
 
 
 @app.post("/items")
-async def create_item(photo: UploadFile, user: AuthedUser = Depends(get_current_user)):
+@limiter.limit("20/minute")
+async def create_item(request: Request, photo: UploadFile, user: AuthedUser = Depends(get_current_user)):
     data = await read_validated_image(photo)
 
     item_id = f"{uuid.uuid4()}.jpg"
@@ -107,7 +132,8 @@ def get_items(user_id: str = Depends(get_current_user_id)):
 
 
 @app.post("/items/batch/detect")
-async def detect_batch(photo: UploadFile, user_id: str = Depends(get_current_user_id)):
+@limiter.limit("10/minute")
+async def detect_batch(request: Request, photo: UploadFile, user_id: str = Depends(get_current_user_id)):
     """Accept one flat-lay photo of multiple garments, detect + crop each
     item, and tag them individually. Items are saved as real photo files
     but NOT yet added to Pinecone — the client reviews them first and
@@ -212,7 +238,9 @@ def remove_item(item_id: str, user: AuthedUser = Depends(get_current_user)):
 
 
 @app.get("/outfit/today")
+@limiter.limit("15/minute")
 def get_todays_outfit(
+    request: Request,
     occasion: str = "casual",
     location: str = "Chicago",
     style_profile: str | None = None,
@@ -231,7 +259,8 @@ class OverrideRequest(BaseModel):
 
 
 @app.post("/outfit/override")
-def override(request: OverrideRequest, user: AuthedUser = Depends(get_current_user)):
+@limiter.limit("20/minute")
+def override(request: Request, body: OverrideRequest, user: AuthedUser = Depends(get_current_user)):
     session = get_conversation(user.user_id, user.token)
     if session is None:
         # Real error, not a valid outfit shape — must be a 4xx so callers can't
@@ -243,12 +272,12 @@ def override(request: OverrideRequest, user: AuthedUser = Depends(get_current_us
 
     contents, outfit = override_outfit(
         contents=session.contents,
-        correction=request.correction,
+        correction=body.correction,
         occasion=session.occasion,
         user_id=user.user_id,
-        new_occasion=request.new_occasion,
+        new_occasion=body.new_occasion,
     )
-    save_conversation(user.user_id, user.token, contents, request.new_occasion or session.occasion)
+    save_conversation(user.user_id, user.token, contents, body.new_occasion or session.occasion)
     return outfit
 
 

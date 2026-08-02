@@ -10,3 +10,5 @@ python-multipart>=0.0.32
 pyjwt[crypto]>=2.13.0
 supabase>=2.31.0
 slowapi>=0.1.10
+pillow>=11.3.0
+tenacity>=9.1.4

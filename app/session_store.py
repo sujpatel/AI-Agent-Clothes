@@ -1,9 +1,13 @@
+import logging
 from dataclasses import dataclass
 
 from google.genai import types
+from pydantic import ValidationError
 from supabase import Client, create_client
 
 from app.config import SUPABASE_API_URL, SUPABASE_PUBLISHABLE_API_KEY
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -49,7 +53,16 @@ def get_conversation(user_id: str, token: str) -> ConversationSession | None:
     if not result.data:
         return None
     row = result.data[0]
-    return ConversationSession(contents=_deserialize_contents(row["contents"]), occasion=row["occasion"])
+    try:
+        contents = _deserialize_contents(row["contents"])
+    except (ValidationError, KeyError, TypeError):
+        # The stored row is malformed — whether from an old data shape or a
+        # user editing their own row directly. Treat it the same as "no
+        # conversation yet" rather than crashing; the caller (POST
+        # /outfit/override) already handles that case with a clean 409.
+        logger.warning(f"Discarding malformed stored conversation for user {user_id}", exc_info=True)
+        return None
+    return ConversationSession(contents=contents, occasion=row["occasion"])
 
 
 def save_conversation(user_id: str, token: str, contents: list, occasion: str) -> None:

@@ -114,7 +114,14 @@ def _reason(contents: list) -> list:
 
         if part.function_call:
             call = part.function_call
-            result = get_weather(**call.args)
+            try:
+                result = get_weather(**call.args)
+            except TypeError:
+                # Gemini can, in principle, be steered (e.g. via crafted
+                # occasion/correction text) into calling the tool with
+                # unexpected argument names — fail this one call gracefully
+                # instead of crashing the whole request.
+                result = {"error": "Could not retrieve weather with the given arguments."}
             contents.append(response.candidates[0].content)
             contents.append(
                 types.Content(

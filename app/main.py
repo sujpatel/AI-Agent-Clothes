@@ -23,6 +23,7 @@ from app.vectorstore import add_item, delete_item, list_items, set_availability,
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
+logger.error("=== BUILD MARKER deploy-check-9f3k2 ===")
 
 
 def _rate_limit_key(request: Request) -> str:

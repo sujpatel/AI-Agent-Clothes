@@ -12,6 +12,12 @@ def _client_for(token: str) -> Client:
     RLS policies scope every request to that user's own folder."""
     client = create_client(SUPABASE_API_URL, SUPABASE_PUBLISHABLE_API_KEY)
     client.postgrest.auth(token)
+    # Storage needs BOTH: `_headers` is the snapshot each bucket proxy copies
+    # when building an upload request, while `session.headers` covers the
+    # plain httpx calls. Setting only the session leaves uploads sending the
+    # anon key as the bearer token, so auth.uid() is null and every RLS
+    # check fails with "new row violates row-level security policy".
+    client.storage._headers["Authorization"] = f"Bearer {token}"
     client.storage.session.headers["authorization"] = f"Bearer {token}"
     return client
 

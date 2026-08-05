@@ -14,6 +14,16 @@ create policy "Users can upload their own photos"
     on storage.objects for insert
     with check (bucket_id = 'photos' and (storage.foldername(name))[1] = auth.uid()::text);
 
+-- upload_photo() calls upload with upsert=true (so re-adding the same
+-- item_id overwrites cleanly) — Supabase treats an upsert as a potential
+-- UPDATE, which needs its own policy separate from INSERT, or the RLS check
+-- fails with "new row violates row-level security policy" even though the
+-- token and path are both correct.
+create policy "Users can update their own photos"
+    on storage.objects for update
+    using (bucket_id = 'photos' and (storage.foldername(name))[1] = auth.uid()::text)
+    with check (bucket_id = 'photos' and (storage.foldername(name))[1] = auth.uid()::text);
+
 create policy "Users can delete their own photos"
     on storage.objects for delete
     using (bucket_id = 'photos' and (storage.foldername(name))[1] = auth.uid()::text);

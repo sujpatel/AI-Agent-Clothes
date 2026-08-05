@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
+from starlette.concurrency import run_in_threadpool
 
 from app.auth import AuthedUser, get_current_user, get_current_user_id
 from app.composition import compose_outfit, override_outfit
@@ -23,7 +24,6 @@ from app.vectorstore import add_item, delete_item, list_items, set_availability,
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 logger = logging.getLogger(__name__)
-logger.error("=== BUILD MARKER deploy-check-9f3k2 ===")
 
 
 def _rate_limit_key(request: Request) -> str:
@@ -116,9 +116,14 @@ async def create_item(request: Request, photo: UploadFile, user: AuthedUser = De
     save_validated_image(temp_path, data)
 
     try:
-        item = tag_photo(temp_path)
-        upload_photo(user.user_id, user.token, item_id, temp_path)
-        add_item(item_id=item_id, item=item, user_id=user.user_id)
+        # tag_photo/upload_photo/add_item are all blocking sync calls. This
+        # route is async (it awaits the upload read), so running them inline
+        # would block the event loop — and storage3's sync httpx client
+        # actually fails outright when called that way, which is why the
+        # sync confirm_batch route could upload fine and this one couldn't.
+        item = await run_in_threadpool(tag_photo, temp_path)
+        await run_in_threadpool(upload_photo, user.user_id, user.token, item_id, temp_path)
+        await run_in_threadpool(add_item, item_id=item_id, item=item, user_id=user.user_id)
     finally:
         # The local file was only ever a working copy for Pillow/Gemini to
         # read — the durable copy now lives in Supabase Storage.
@@ -147,15 +152,17 @@ async def detect_batch(request: Request, photo: UploadFile, user_id: str = Depen
     save_validated_image(dump_path, data)
 
     try:
-        detections = detect_garments(dump_path)
-        crop_paths = crop_detections(dump_path, detections, output_dir=user_dir)
+        # Blocking Gemini/Pillow work — same threadpool treatment as
+        # create_item, so it doesn't stall the event loop.
+        detections = await run_in_threadpool(detect_garments, dump_path)
+        crop_paths = await run_in_threadpool(crop_detections, dump_path, detections, output_dir=user_dir)
     finally:
         dump_path.unlink(missing_ok=True)
 
     pending = []
     for crop_path in crop_paths:
         try:
-            item = tag_photo(crop_path)
+            item = await run_in_threadpool(tag_photo, crop_path)
         except Exception:
             # One crop failing to tag (even after retries) shouldn't waste the
             # whole batch — skip it and clean up its orphaned file.

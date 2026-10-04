@@ -160,9 +160,9 @@ async def detect_batch(request: Request, photo: UploadFile, user_id: str = Depen
         dump_path.unlink(missing_ok=True)
 
     pending = []
-    for crop_path in crop_paths:
+    for det, crop_path in zip(detections.items, crop_paths):
         try:
-            item = await run_in_threadpool(tag_photo, crop_path)
+            item = await run_in_threadpool(tag_photo, crop_path, hint=det.label)
         except Exception:
             # One crop failing to tag (even after retries) shouldn't waste the
             # whole batch — skip it and clean up its orphaned file.

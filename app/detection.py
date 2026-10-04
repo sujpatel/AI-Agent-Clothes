@@ -32,8 +32,8 @@ class Detections(BaseModel):
 @with_gemini_retry
 def detect_garments(photo_path: Path) -> Detections:
     """Ask Gemini to find every garment in a flat-lay photo and return a
-    bounding box per item. Drops any malformed boxes instead of raising,
-    since Gemini doesn't always respect the 4-number format on cluttered images."""
+    bounding box per item. Drops any malformed or inverted boxes instead of
+    raising, since Gemini doesn't always return valid boxes on cluttered images."""
     image_bytes = photo_path.read_bytes()
     mime_type = "image/png" if photo_path.suffix.lower() == ".png" else "image/jpeg"
 
@@ -50,8 +50,50 @@ def detect_garments(photo_path: Path) -> Detections:
     )
     raw = json.loads(response.text)
 
-    valid_items = [item for item in raw.get("items", []) if len(item.get("box_2d", [])) == 4]
-    return Detections.model_validate({"items": valid_items})
+    valid_items = [item for item in raw.get("items", []) if _is_valid_box(item.get("box_2d", []))]
+    return Detections.model_validate({"items": _drop_duplicate_boxes(valid_items)})
+
+
+# Two boxes overlapping this much are treated as the same garment. Kept well
+# above zero so items legitimately lying on each other (a belt on a dress)
+# aren't merged — those have small overlap relative to their combined area.
+DUPLICATE_IOU_THRESHOLD = 0.6
+
+
+def _iou(a: list[int], b: list[int]) -> float:
+    """Intersection-over-union of two [ymin, xmin, ymax, xmax] boxes."""
+    inter_h = max(0, min(a[2], b[2]) - max(a[0], b[0]))
+    inter_w = max(0, min(a[3], b[3]) - max(a[1], b[1]))
+    inter = inter_h * inter_w
+    area_a = (a[2] - a[0]) * (a[3] - a[1])
+    area_b = (b[2] - b[0]) * (b[3] - b[1])
+    return inter / (area_a + area_b - inter)
+
+
+def _drop_duplicate_boxes(items: list[dict]) -> list[dict]:
+    """Gemini sometimes returns the same garment twice with nearly identical
+    boxes. Keep the larger box of any heavily-overlapping pair (it's the one
+    less likely to have clipped the garment)."""
+    by_size = sorted(
+        items,
+        key=lambda it: (it["box_2d"][2] - it["box_2d"][0]) * (it["box_2d"][3] - it["box_2d"][1]),
+        reverse=True,
+    )
+    kept: list[dict] = []
+    for item in by_size:
+        if all(_iou(item["box_2d"], k["box_2d"]) < DUPLICATE_IOU_THRESHOLD for k in kept):
+            kept.append(item)
+    # Restore Gemini's original order so crops line up the way they did before.
+    return [it for it in items if any(it is k for k in kept)]
+
+
+def _is_valid_box(box: list[int]) -> bool:
+    # Gemini occasionally returns inverted or zero-size boxes, which make
+    # PIL's crop() raise, so they're dropped along with malformed ones.
+    if len(box) != 4:
+        return False
+    ymin, xmin, ymax, xmax = box
+    return ymax > ymin and xmax > xmin
 
 
 def crop_detections(photo_path: Path, detections: Detections, output_dir: Path) -> list[Path]:

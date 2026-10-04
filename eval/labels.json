@@ -1,0 +1,175 @@
+{
+  "photos": [
+    {
+      "file": "laid_out_test.jpg",
+      "items": [
+        {"name": "white knit cardigan", "category": "outerwear"},
+        {"name": "white headband with gold flower", "category": "accessory"},
+        {"name": "magenta sleeveless dress", "category": ["top", "bottom"]},
+        {"name": "white polka-dot dress", "category": ["top", "bottom"]},
+        {"name": "purple glitter belt", "category": "accessory"},
+        {"name": "purple 'Let Your Shine' tee", "category": "top"},
+        {"name": "grey lace-trim leggings", "category": "bottom"},
+        {"name": "grey polka-dot peplum top", "category": "top"},
+        {"name": "coral skirt", "category": "bottom"},
+        {"name": "yellow patterned sundress", "category": ["top", "bottom"]},
+        {"name": "pink cardigan", "category": "outerwear"},
+        {"name": "pink flower headband", "category": "accessory"}
+      ]
+    },
+    {
+      "file": "test7.jpeg",
+      "items": [
+        {"name": "black gloves", "category": "accessory"},
+        {"name": "braided brown belt", "category": "accessory"},
+        {"name": "brown lace-up boots", "category": "shoes"},
+        {"name": "brown wallet", "category": "accessory"},
+        {"name": "reading glasses", "category": "accessory"},
+        {"name": "grey wool socks", "category": ["accessory", "shoes"]},
+        {"name": "plaid scarf", "category": "accessory"},
+        {"name": "olive henley sweater", "category": ["top", "outerwear"]},
+        {"name": "black beanie", "category": "accessory"},
+        {"name": "khaki chinos", "category": "bottom"}
+      ]
+    },
+    {
+      "file": "test8.jpeg",
+      "items": [
+        {"name": "black wallet", "category": "accessory"},
+        {"name": "blue gingham shirt", "category": "top"},
+        {"name": "blue jeans", "category": "bottom"},
+        {"name": "black patent dress shoes", "category": "shoes"},
+        {"name": "silver watch", "category": "accessory"}
+      ]
+    },
+    {
+      "file": "test9.jpeg",
+      "items": [
+        {"name": "grey-blue blazer", "category": "outerwear"},
+        {"name": "pocket square inside blazer pocket", "category": "accessory", "ignore": true},
+        {"name": "blue striped dress shirt", "category": "top"},
+        {"name": "folded blue pocket square with flower", "category": "accessory"},
+        {"name": "rolled brown leather case", "category": "accessory"},
+        {"name": "folded blue cloth under watch", "category": "accessory"},
+        {"name": "brown leather watch", "category": "accessory"},
+        {"name": "brown brogues", "category": "shoes"}
+      ]
+    },
+    {
+      "file": "test10.jpg",
+      "items": [
+        {"name": "beige button-down shirt", "category": "top"},
+        {"name": "straw fedora", "category": "accessory"},
+        {"name": "tortoiseshell sunglasses", "category": "accessory"},
+        {"name": "navy chino shorts", "category": "bottom"},
+        {"name": "brown leather watch", "category": "accessory"},
+        {"name": "brown leather sandals", "category": "shoes"}
+      ]
+    },
+    {
+      "file": "test11.jpg",
+      "items": [
+        {"name": "grey handbag", "category": "accessory"},
+        {"name": "denim shorts", "category": "bottom"},
+        {"name": "purple patterned halter top", "category": "top"},
+        {"name": "beige tiered ruffle skirt", "category": "bottom"},
+        {"name": "beige shorts", "category": "bottom"},
+        {"name": "black sunglasses", "category": "accessory"},
+        {"name": "pink sunglasses", "category": "accessory"},
+        {"name": "purple belt with buckle", "category": "accessory"},
+        {"name": "pearl necklace", "category": "accessory"},
+        {"name": "pink necklace", "category": "accessory"},
+        {"name": "cuff bracelet", "category": "accessory"},
+        {"name": "light blue patterned scarf", "category": "accessory"},
+        {"name": "brown leather belt", "category": "accessory"},
+        {"name": "maroon button-down shirt", "category": "top"},
+        {"name": "dark grey button-down shirt", "category": "top"},
+        {"name": "grey ribbed tee", "category": "top"},
+        {"name": "grey satin blouse", "category": "top"},
+        {"name": "beige cargo pants", "category": "bottom"},
+        {"name": "grey halter swimsuit", "ignore": true},
+        {"name": "purple bra", "ignore": true},
+        {"name": "purple underwear", "ignore": true},
+        {"name": "grey bra", "ignore": true},
+        {"name": "grey thong", "ignore": true},
+        {"name": "teal bikini top", "ignore": true},
+        {"name": "teal bikini bottom", "ignore": true},
+        {"name": "maroon boxer briefs", "ignore": true},
+        {"name": "grey patterned boxer briefs", "ignore": true}
+      ]
+    },
+    {
+      "file": "test12.jpeg",
+      "items": [
+        {"name": "orange patterned headband", "category": "accessory"},
+        {"name": "white tank top", "category": "top"},
+        {"name": "magenta ribbed cami", "category": "top"},
+        {"name": "black floral top", "category": "top"},
+        {"name": "pink ribbed top", "category": "top"},
+        {"name": "black polka-dot smocked ruffle piece", "category": ["top", "bottom"]},
+        {"name": "cream embroidered dress", "category": ["top", "bottom"]},
+        {"name": "grey striped shorts", "category": "bottom"},
+        {"name": "white lace top", "category": ["top", "outerwear"]},
+        {"name": "black lace top", "category": "top"},
+        {"name": "denim tie-waist shorts", "category": "bottom"},
+        {"name": "white shorts", "category": "bottom"},
+        {"name": "grey sweatpants", "category": "bottom"},
+        {"name": "black jeans", "category": "bottom"},
+        {"name": "gingham tie-waist pants", "category": "bottom"},
+        {"name": "patterned fringe scarf", "category": "accessory"},
+        {"name": "white lace gloves", "category": "accessory"},
+        {"name": "teal item cut off at left edge", "ignore": true},
+        {"name": "small folded pink striped item", "ignore": true},
+        {"name": "small folded blue sparkly item", "ignore": true}
+      ]
+    },
+    {
+      "file": "test13.jpeg",
+      "items": [
+        {"name": "light wash jeans", "category": "bottom"},
+        {"name": "beige oversized sweater", "category": ["top", "outerwear"]},
+        {"name": "wicker handbag", "category": "accessory"},
+        {"name": "brown suede boots", "category": "shoes"}
+      ]
+    },
+    {
+      "file": "test14.jpeg",
+      "items": [
+        {"name": "multicolor striped knit", "category": ["accessory", "top"]},
+        {"name": "tan cap", "category": "accessory"},
+        {"name": "blue beanie", "category": "accessory"},
+        {"name": "small black item (gloves)", "category": "accessory"},
+        {"name": "grey Nike sweatshirt", "category": "top"},
+        {"name": "striped long-sleeve", "category": "top"},
+        {"name": "grey folded item, top center", "category": ["top", "bottom"]},
+        {"name": "pink top", "category": "top"},
+        {"name": "white fuzzy socks", "category": ["accessory", "shoes"]},
+        {"name": "black tank top", "category": "top"},
+        {"name": "grey tank top", "category": "top"},
+        {"name": "rust sherpa jacket", "category": "outerwear"},
+        {"name": "sage button-up shirt", "category": "top"},
+        {"name": "light blue denim shirt", "category": ["top", "outerwear"]},
+        {"name": "black '444' graphic tee", "category": "top"},
+        {"name": "black 'Sports Club' graphic tee", "category": "top"},
+        {"name": "olive folded item (upper)", "category": ["top", "bottom"]},
+        {"name": "dark grey folded item", "category": ["top", "bottom"]},
+        {"name": "olive folded item (lower)", "category": ["top", "bottom"]},
+        {"name": "lavender shorts", "category": "bottom"},
+        {"name": "black and white striped pants", "category": "bottom"}
+      ]
+    },
+    {
+      "file": "test15.jpeg",
+      "items": [
+        {"name": "charcoal scarf", "category": "accessory"},
+        {"name": "cream cable-knit sweater", "category": "top"},
+        {"name": "black pom beanie", "category": "accessory"},
+        {"name": "beige pom beanie", "category": "accessory"},
+        {"name": "camel wool coat", "category": "outerwear"},
+        {"name": "black gloves", "category": "accessory"},
+        {"name": "kids' patterned puffer jacket", "category": "outerwear"},
+        {"name": "black lace-up boots", "category": "shoes"}
+      ]
+    }
+  ]
+}

@@ -4,3 +4,7 @@ __pycache__/
 .venv/
 venv/
 chroma_data/
+.claude/
+CLAUDE.md
+# Eval photos are mostly third-party stock images — labels and results are tracked, photos aren't.
+eval/photos/

@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     print(f"\nTagging each crop (this calls Gemini once per item — may take a bit):\n")
     for det, crop_path in zip(detections.items, crop_paths):
-        item = tag_photo(crop_path)
+        item = tag_photo(crop_path, hint=det.label)
         print(f"  {crop_path.name}")
         print(f"    detected label: {det.label}")
         print(f"    tagged as:      category={item.category}, color={item.color}, "

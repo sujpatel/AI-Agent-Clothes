@@ -1,0 +1,103 @@
+{
+  "run_at": "2026-10-03T15:55:58",
+  "mode": "detect+tag",
+  "summary": {
+    "photos": 1,
+    "labeled_items": 12,
+    "detected_items": 12,
+    "exact_count_rate": 1.0,
+    "mean_abs_count_error": 0.0,
+    "matched_items": 10,
+    "precision": 0.8333333333333334,
+    "recall": 0.8333333333333334,
+    "f1": 0.8333333333333334,
+    "per_category_recall": {
+      "top": {
+        "labeled": 2,
+        "matched": 2,
+        "recall": 1.0
+      },
+      "bottom": {
+        "labeled": 2,
+        "matched": 1,
+        "recall": 0.5
+      },
+      "outerwear": {
+        "labeled": 2,
+        "matched": 2,
+        "recall": 1.0
+      },
+      "accessory": {
+        "labeled": 3,
+        "matched": 2,
+        "recall": 0.6666666666666666
+      }
+    }
+  },
+  "photos": [
+    {
+      "file": "laid_out_test.jpg",
+      "labeled_count": 12,
+      "detected_count": 12,
+      "detected_labels": [
+        "white cardigan",
+        "pink dress",
+        "gold brooch",
+        "white polka dot dress",
+        "purple belt",
+        "purple long-sleeve top",
+        "grey leggings",
+        "grey polka dot top",
+        "red skirt",
+        "yellow patterned dress",
+        "pink cardigan",
+        "pink flower accessory"
+      ],
+      "predicted_categories": [
+        "outerwear",
+        "outerwear",
+        "shoes",
+        "top",
+        "accessory",
+        "top",
+        "bottom",
+        "top",
+        "bottom",
+        "top",
+        "outerwear",
+        "accessory"
+      ],
+      "matched": 10,
+      "missed": [
+        "coral skirt",
+        "pink flower headband"
+      ],
+      "extra": [
+        "gold brooch -> shoes",
+        "pink cardigan -> outerwear"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 2,
+          "matched": 2
+        },
+        "bottom": {
+          "labeled": 2,
+          "matched": 1
+        },
+        "shoes": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "outerwear": {
+          "labeled": 2,
+          "matched": 2
+        },
+        "accessory": {
+          "labeled": 3,
+          "matched": 2
+        }
+      }
+    }
+  ]
+}

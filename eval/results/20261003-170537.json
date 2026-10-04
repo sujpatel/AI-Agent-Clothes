@@ -1,0 +1,689 @@
+{
+  "run_at": "2026-10-03T17:05:37",
+  "mode": "detect+tag",
+  "summary": {
+    "photos": 10,
+    "labeled_items": 108,
+    "ignored_items": 13,
+    "detected_items": 120,
+    "exact_count_rate": 0.5,
+    "mean_abs_count_error": 0.5,
+    "matched_items": 94,
+    "precision": 0.8623853211009175,
+    "recall": 0.8703703703703703,
+    "f1": 0.8663594470046083,
+    "per_category_recall": {
+      "top": {
+        "labeled": 24,
+        "matched": 24,
+        "recall": 1.0
+      },
+      "bottom": {
+        "labeled": 18,
+        "matched": 15,
+        "recall": 0.8333333333333334
+      },
+      "shoes": {
+        "labeled": 6,
+        "matched": 6,
+        "recall": 1.0
+      },
+      "outerwear": {
+        "labeled": 6,
+        "matched": 4,
+        "recall": 0.6666666666666666
+      },
+      "accessory": {
+        "labeled": 38,
+        "matched": 29,
+        "recall": 0.7631578947368421
+      }
+    }
+  },
+  "photos": [
+    {
+      "file": "laid_out_test.jpg",
+      "labeled_count": 12,
+      "ignored_count": 0,
+      "detected_count": 11,
+      "detected_labels": [
+        "gold brooch",
+        "pink dress",
+        "white polka dot dress",
+        "purple belt",
+        "purple t-shirt",
+        "grey leggings",
+        "grey polka dot top",
+        "red skirt",
+        "yellow dress",
+        "pink cardigan",
+        "pink flower headband"
+      ],
+      "predicted_categories": [
+        "top",
+        "top",
+        "top",
+        "bottom",
+        "top",
+        "bottom",
+        "top",
+        "bottom",
+        "top",
+        "top",
+        "top"
+      ],
+      "scored_detected_count": 11,
+      "matched": 7,
+      "missed": [
+        "white knit cardigan",
+        "white headband with gold flower",
+        "purple glitter belt",
+        "pink cardigan",
+        "pink flower headband"
+      ],
+      "extra": [
+        "red skirt -> bottom",
+        "yellow dress -> top",
+        "pink cardigan -> top",
+        "pink flower headband -> top"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 2,
+          "matched": 2
+        },
+        "bottom": {
+          "labeled": 2,
+          "matched": 2
+        },
+        "shoes": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "outerwear": {
+          "labeled": 2,
+          "matched": 0
+        },
+        "accessory": {
+          "labeled": 3,
+          "matched": 0
+        }
+      }
+    },
+    {
+      "file": "test7.jpeg",
+      "labeled_count": 10,
+      "ignored_count": 0,
+      "detected_count": 10,
+      "detected_labels": [
+        "gloves",
+        "belt",
+        "shoes",
+        "wallet with glasses",
+        "socks",
+        "scarf",
+        "beanie",
+        "sweater",
+        "trousers",
+        "socks"
+      ],
+      "predicted_categories": [
+        "accessory",
+        "accessory",
+        "shoes",
+        "accessory",
+        "accessory",
+        "accessory",
+        "accessory",
+        "top",
+        "bottom",
+        "top"
+      ],
+      "scored_detected_count": 10,
+      "matched": 9,
+      "missed": [
+        "black beanie"
+      ],
+      "extra": [
+        "socks -> top"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "bottom": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "shoes": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "outerwear": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "accessory": {
+          "labeled": 6,
+          "matched": 5
+        }
+      }
+    },
+    {
+      "file": "test8.jpeg",
+      "labeled_count": 5,
+      "ignored_count": 0,
+      "detected_count": 6,
+      "detected_labels": [
+        "black wallet",
+        "plaid shirt",
+        "blue jeans",
+        "black dress shoes",
+        "perfume bottle",
+        "watch"
+      ],
+      "predicted_categories": [
+        "top",
+        "top",
+        "bottom",
+        "shoes",
+        "top",
+        "top"
+      ],
+      "scored_detected_count": 6,
+      "matched": 3,
+      "missed": [
+        "black wallet",
+        "silver watch"
+      ],
+      "extra": [
+        "plaid shirt -> top",
+        "perfume bottle -> top",
+        "watch -> top"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "bottom": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "shoes": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "outerwear": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "accessory": {
+          "labeled": 2,
+          "matched": 0
+        }
+      }
+    },
+    {
+      "file": "test9.jpeg",
+      "labeled_count": 7,
+      "ignored_count": 1,
+      "detected_count": 8,
+      "detected_labels": [
+        "gray blazer",
+        "striped dress shirt",
+        "brown leather shoes",
+        "brown leather shoes",
+        "pocket square",
+        "watch",
+        "small flower boutonniere",
+        "rolled brown accessory"
+      ],
+      "predicted_categories": [
+        "outerwear",
+        "top",
+        "shoes",
+        "shoes",
+        "top",
+        "accessory",
+        "accessory",
+        "accessory"
+      ],
+      "scored_detected_count": 8,
+      "matched": 6,
+      "missed": [
+        "brown leather watch"
+      ],
+      "extra": [
+        "brown leather shoes -> shoes",
+        "pocket square -> top"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "bottom": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "shoes": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "outerwear": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "accessory": {
+          "labeled": 4,
+          "matched": 3
+        }
+      }
+    },
+    {
+      "file": "test10.jpg",
+      "labeled_count": 6,
+      "ignored_count": 0,
+      "detected_count": 6,
+      "detected_labels": [
+        "beige button-up shirt",
+        "straw hat with blue band",
+        "brown sunglasses",
+        "navy blue shorts",
+        "brown leather watch",
+        "brown leather sandals"
+      ],
+      "predicted_categories": [
+        "top",
+        "accessory",
+        "accessory",
+        "bottom",
+        "accessory",
+        "shoes"
+      ],
+      "scored_detected_count": 6,
+      "matched": 6,
+      "missed": [],
+      "extra": [],
+      "per_category": {
+        "top": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "bottom": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "shoes": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "outerwear": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "accessory": {
+          "labeled": 3,
+          "matched": 3
+        }
+      }
+    },
+    {
+      "file": "test11.jpg",
+      "labeled_count": 18,
+      "ignored_count": 9,
+      "detected_count": 28,
+      "detected_labels": [
+        "ornate box",
+        "light brown handbag",
+        "purple patterned top",
+        "black bra",
+        "black lace underwear",
+        "white shawl",
+        "sunglasses",
+        "hairbrush",
+        "hairbrush",
+        "silver necklace and bracelets",
+        "light blue patterned scarf",
+        "beige ruffled top",
+        "blue denim shorts",
+        "light brown shorts",
+        "grey bra",
+        "grey thong",
+        "blue bikini top",
+        "blue bikini bottom",
+        "snorkel mask",
+        "swim goggles",
+        "snorkel",
+        "grey long-sleeved top",
+        "black leather belt",
+        "dark grey collared shirt",
+        "light grey striped t-shirt",
+        "khaki cargo pants",
+        "dark red shorts",
+        "grey patterned shorts"
+      ],
+      "predicted_categories": [
+        "bottom",
+        "top",
+        "top",
+        "top",
+        "top",
+        "top",
+        "accessory",
+        "accessory",
+        "shoes",
+        "top",
+        "accessory",
+        "bottom",
+        "bottom",
+        "bottom",
+        "top",
+        "bottom",
+        "top",
+        "bottom",
+        "accessory",
+        "accessory",
+        "accessory",
+        "top",
+        "accessory",
+        "top",
+        "top",
+        "bottom",
+        "bottom",
+        "bottom"
+      ],
+      "scored_detected_count": 19,
+      "matched": 16,
+      "missed": [
+        "light blue patterned scarf",
+        "brown leather belt"
+      ],
+      "extra": [
+        "khaki cargo pants -> bottom",
+        "dark red shorts -> bottom",
+        "grey patterned shorts -> bottom"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 5,
+          "matched": 5
+        },
+        "bottom": {
+          "labeled": 4,
+          "matched": 4
+        },
+        "shoes": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "outerwear": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "accessory": {
+          "labeled": 9,
+          "matched": 7
+        }
+      }
+    },
+    {
+      "file": "test12.jpeg",
+      "labeled_count": 17,
+      "ignored_count": 3,
+      "detected_count": 18,
+      "detected_labels": [
+        "Yellow patterned scarf",
+        "White spaghetti strap tank top",
+        "Pink tank top",
+        "Black floral tank top",
+        "Pink ribbed long sleeve top",
+        "Black smocked short dress",
+        "White embroidered off-the-shoulder dress",
+        "Grey striped off-the-shoulder top",
+        "White lace camisole",
+        "Pink folded fabric",
+        "Black crochet lace top",
+        "Blue denim wrap skirt with white panel",
+        "Blue folded bandana",
+        "Burgundy patterned fringed shawl",
+        "Blue plaid button-up shirt",
+        "Dark blue pants",
+        "Light grey joggers",
+        "White crochet knit top"
+      ],
+      "predicted_categories": [
+        "accessory",
+        "top",
+        "accessory",
+        "top",
+        "top",
+        "top",
+        "top",
+        "top",
+        "top",
+        "bottom",
+        "top",
+        "bottom",
+        "accessory",
+        "accessory",
+        "bottom",
+        "bottom",
+        "bottom",
+        "accessory"
+      ],
+      "scored_detected_count": 16,
+      "matched": 16,
+      "missed": [
+        "gingham tie-waist pants"
+      ],
+      "extra": [],
+      "per_category": {
+        "top": {
+          "labeled": 5,
+          "matched": 5
+        },
+        "bottom": {
+          "labeled": 6,
+          "matched": 5
+        },
+        "shoes": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "outerwear": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "accessory": {
+          "labeled": 3,
+          "matched": 3
+        }
+      }
+    },
+    {
+      "file": "test13.jpeg",
+      "labeled_count": 4,
+      "ignored_count": 0,
+      "detected_count": 4,
+      "detected_labels": [
+        "brown sweater",
+        "blue jeans",
+        "woven handbag",
+        "brown boots"
+      ],
+      "predicted_categories": [
+        "top",
+        "top",
+        "accessory",
+        "shoes"
+      ],
+      "scored_detected_count": 4,
+      "matched": 3,
+      "missed": [
+        "light wash jeans"
+      ],
+      "extra": [
+        "blue jeans -> top"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "bottom": {
+          "labeled": 1,
+          "matched": 0
+        },
+        "shoes": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "outerwear": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "accessory": {
+          "labeled": 1,
+          "matched": 1
+        }
+      }
+    },
+    {
+      "file": "test14.jpeg",
+      "labeled_count": 21,
+      "ignored_count": 0,
+      "detected_count": 20,
+      "detected_labels": [
+        "brown fuzzy jacket",
+        "brown fuzzy jacket",
+        "striped sweater",
+        "baseball cap",
+        "blue folded garment",
+        "black accessory",
+        "grey nike sweatshirt",
+        "striped long sleeve top",
+        "pink folded shirt",
+        "green button up shirt",
+        "white crumpled garment",
+        "blue denim pants",
+        "grey short sleeve top",
+        "black t-shirt",
+        "black t-shirt with 444 print",
+        "dark grey folded garment",
+        "white shorts",
+        "dark grey pants",
+        "olive green pants",
+        "black sports club t-shirt"
+      ],
+      "predicted_categories": [
+        "outerwear",
+        "accessory",
+        "accessory",
+        "accessory",
+        "accessory",
+        "top",
+        "top",
+        "top",
+        "top",
+        "top",
+        "bottom",
+        "bottom",
+        "top",
+        "top",
+        "accessory",
+        "bottom",
+        "outerwear",
+        "bottom",
+        "top",
+        "bottom"
+      ],
+      "scored_detected_count": 20,
+      "matched": 20,
+      "missed": [
+        "black and white striped pants"
+      ],
+      "extra": [],
+      "per_category": {
+        "top": {
+          "labeled": 8,
+          "matched": 8
+        },
+        "bottom": {
+          "labeled": 2,
+          "matched": 1
+        },
+        "shoes": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "outerwear": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "accessory": {
+          "labeled": 3,
+          "matched": 3
+        }
+      }
+    },
+    {
+      "file": "test15.jpeg",
+      "labeled_count": 8,
+      "ignored_count": 0,
+      "detected_count": 9,
+      "detected_labels": [
+        "beige sweater",
+        "black scarf",
+        "black beanie with pompom",
+        "beige beanie with pompom",
+        "brown coat",
+        "colorful puffer jacket",
+        "black gloves",
+        "black lace-up boots",
+        "black ankle boots"
+      ],
+      "predicted_categories": [
+        "top",
+        "accessory",
+        "accessory",
+        "accessory",
+        "outerwear",
+        "outerwear",
+        "accessory",
+        "shoes",
+        "shoes"
+      ],
+      "scored_detected_count": 9,
+      "matched": 8,
+      "missed": [],
+      "extra": [
+        "black ankle boots -> shoes"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "bottom": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "shoes": {
+          "labeled": 1,
+          "matched": 1
+        },
+        "outerwear": {
+          "labeled": 2,
+          "matched": 2
+        },
+        "accessory": {
+          "labeled": 4,
+          "matched": 4
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+{
+  "run_at": "2026-10-03T15:54:48",
+  "mode": "detect+tag",
+  "summary": {
+    "photos": 1,
+    "labeled_items": 12,
+    "detected_items": 11,
+    "exact_count_rate": 0.0,
+    "mean_abs_count_error": 1.0,
+    "matched_items": 10,
+    "precision": 0.9090909090909091,
+    "recall": 0.8333333333333334,
+    "f1": 0.8695652173913043,
+    "per_category_recall": {
+      "top": {
+        "labeled": 2,
+        "matched": 2,
+        "recall": 1.0
+      },
+      "bottom": {
+        "labeled": 2,
+        "matched": 2,
+        "recall": 1.0
+      },
+      "outerwear": {
+        "labeled": 2,
+        "matched": 1,
+        "recall": 0.5
+      },
+      "accessory": {
+        "labeled": 3,
+        "matched": 2,
+        "recall": 0.6666666666666666
+      }
+    }
+  },
+  "photos": [
+    {
+      "file": "laid_out_test.jpg",
+      "labeled_count": 12,
+      "detected_count": 11,
+      "detected_labels": [
+        "white cardigan",
+        "pink maxi dress",
+        "white polka dot dress",
+        "purple belt",
+        "purple long-sleeve top",
+        "grey leggings",
+        "grey polka dot top",
+        "coral skirt",
+        "yellow patterned dress",
+        "pink cardigan",
+        "pink flower accessory"
+      ],
+      "predicted_categories": [
+        "top",
+        "top",
+        "top",
+        "accessory",
+        "top",
+        "bottom",
+        "top",
+        "bottom",
+        "top",
+        "outerwear",
+        "accessory"
+      ],
+      "matched": 10,
+      "missed": [
+        "pink cardigan",
+        "pink flower headband"
+      ],
+      "extra": [
+        "yellow patterned dress -> top"
+      ],
+      "per_category": {
+        "top": {
+          "labeled": 2,
+          "matched": 2
+        },
+        "bottom": {
+          "labeled": 2,
+          "matched": 2
+        },
+        "shoes": {
+          "labeled": 0,
+          "matched": 0
+        },
+        "outerwear": {
+          "labeled": 2,
+          "matched": 1
+        },
+        "accessory": {
+          "labeled": 3,
+          "matched": 2
+        }
+      }
+    }
+  ]
+}

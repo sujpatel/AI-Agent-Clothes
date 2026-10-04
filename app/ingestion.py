@@ -23,16 +23,27 @@ PROMPT = """Look at this clothing item photo and extract its attributes.
 """
 
 
+CROP_HINT = """
+This image was cropped from a larger photo of several garments, so edges of
+neighboring items may be visible. The item to describe is: "{label}".
+Describe only that item and ignore anything else in the frame.
+"""
+
+
 @with_gemini_retry
-def tag_photo(photo_path: Path) -> ClothingItem:
+def tag_photo(photo_path: Path, hint: str | None = None) -> ClothingItem:
+    """Tag a single clothing photo. `hint` is the detector's label for a crop
+    from a flat-lay — without it, crops that clip a neighboring garment often
+    get tagged as the wrong item (e.g. jeans under a sweater tagged "top")."""
     image_bytes = photo_path.read_bytes()
     mime_type = "image/png" if photo_path.suffix.lower() == ".png" else "image/jpeg"
+    prompt = PROMPT + CROP_HINT.format(label=hint) if hint else PROMPT
 
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=[
             types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
-            PROMPT,
+            prompt,
         ],
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
